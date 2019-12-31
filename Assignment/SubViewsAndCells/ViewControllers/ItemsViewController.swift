@@ -13,18 +13,17 @@ class ItemsViewController: UIViewController {
     var handler =  ApiHandler()
     private let refreshControl = UIRefreshControl()
     let  canadaTableView: UITableView = {
-        let t = UITableView()
-        t.translatesAutoresizingMaskIntoConstraints = false
-        return t
+        let tableView = UITableView()
+       tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
-            self.view.activityStartAnimating(activityColor: UIColor.white, backgroundColor: UIColor.black.withAlphaComponent(0.5), title: Constants.AlertConstatnts.Activity_Title, center: self.view.center )
+    self.view.activityStartAnimating(activityColor: UIColor.white, backgroundColor: UIColor.black.withAlphaComponent(0.5), title: Constants.AlertConstatnts.ActivityTitle, center: self.view.center )
         }
         self.view.addSubview(canadaTableView)
-        canadaTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: Constants.SubViewCellConstants.Custom_TableCell_resuseIdentiFier)
+       canadaTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: Constants.SubViewCellConstants.CustomTableCellesuseIdentiFier)
         canadaTableView.delegate = self
         canadaTableView.dataSource = self
         self.view.addSubview(canadaTableView)
@@ -34,9 +33,9 @@ class ItemsViewController: UIViewController {
         canadaTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         canadaTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
         canadaTableView.tableFooterView = UIView()
-        refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
-        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.25, green: 0.72, blue: 0.85, alpha: 1.0)]
-        let attributedTitle = NSAttributedString(string: Constants.AlertConstatnts.REFRESH_CONTROL_Title, attributes: attributes)
+        refreshControl.tintColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+          let attributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.25, green: 0.72, blue: 0.85, alpha: 1.0)]
+         let attributedTitle = NSAttributedString(string: Constants.AlertConstatnts.REFRESHCONTROLTitle, attributes: attributes)
         refreshControl.attributedTitle = attributedTitle
         refreshControl.addTarget(self, action: #selector(refreshdata(_:)), for: .valueChanged)
         if #available(iOS 10.0, *) {
@@ -44,31 +43,28 @@ class ItemsViewController: UIViewController {
         } else {
             canadaTableView.addSubview(refreshControl)
         }
-        
-        if Reachability.isConnectedToNetwork(){
-            print(Constants.InternetConnectivity.NETWORK_SUCCESS_MSG)
+        if Reachability.isConnectedToNetwork() {
+            print(Constants.InternetConnectivity.NETWORKSUCCESSMSG)
             self.getItemsList()
-        }else{
-            print(Constants.InternetConnectivity.NETWORK_Failure_MSG)
-            self.presentNetowrkAlertWithTwoButton(withTitle: Constants.AlertConstatnts.TITLE, message: Constants.AlertConstatnts.Title_Msg) { (UiAlertActionIn) in
+        } else {
+            print(Constants.InternetConnectivity.NETWORKFailureMSG)
+            self.presentNetowrkAlertWithTwoButton(withTitle: Constants.AlertConstatnts.TITLE, message: Constants.AlertConstatnts.TitleMsg) { (uiAlertActionIn) in
                 DispatchQueue.main.async {
                     self.view.activityStopAnimating()
                 }
                 self.getItemsList()
             }
-            return;
+            return
         }
     }
-    
-    @objc private func refreshdata(_ sender: Any) {
+ @objc private func refreshdata(_ sender: Any) {
         self.getItemsList()
         self.refreshControl.endRefreshing()
     }
     
-    func getItemsList(){
-
+    func getItemsList() {
         handler.makeAPICall(url: Constants.API.BASEURL, method: .GET, success: { (data, response, error) in
-            guard let data = data else{return}
+            guard let data = data else { return }
             let responseStrInISOLatin = String(data: data, encoding: String.Encoding.isoLatin1)
             guard let modifiedDataInUTF8Format = responseStrInISOLatin?.data(using: String.Encoding.utf8) else {
                 return
@@ -87,10 +83,9 @@ class ItemsViewController: UIViewController {
             }
         },
                             failure: { (data, response, error) in
-                                print(error?.localizedDescription ?? Constants.Error.ERROR_MSG)
+                                print(data!)
+                                print(response!)
+                                print(error?.localizedDescription ?? Constants.Error.ERRORMSG)
         })
     }
-    
 }
-
-

@@ -8,76 +8,65 @@
 
 import Foundation
 import UIKit
-extension ItemsViewController: UITableViewDelegate,UITableViewDataSource {
+extension ItemsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let jsonCount = self.jsonRowsArray?.count{
+        if let jsonCount = self.jsonRowsArray?.count {
             return jsonCount
-        }
-        else{
-            
+        } else {
             return 0
         }
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.SubViewCellConstants.Custom_TableCell_resuseIdentiFier, for: indexPath) as! CustomTableViewCell
-        cell.nameLabel.text =  self.jsonRowsArray?[indexPath.row].title
-        cell.profileImageView.downloadImageFrom(link: self.jsonRowsArray?[indexPath.row].imageHref ?? Constants.API.PLACEHOLDERURL, contentMode: .scaleToFill)
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.SubViewCellConstants.CustomTableCellesuseIdentiFier, for: indexPath) as? CustomTableViewCell
+        cell?.nameLabel.text =  self.jsonRowsArray?[indexPath.row].title
+        cell?.profileImageView.loadImageWithUrl(URL(string: self.jsonRowsArray?[indexPath.row].imageHref ?? Constants.API.PLACEHOLDERURL)!)
+        cell?.jobTitleDetailedLabel.text = self.jsonRowsArray?[indexPath.row].description
         self.canadaTableView.separatorStyle = .none
-        cell.selectionStyle = .none
-        return cell
+        cell?.selectionStyle = .none
+        return cell!
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        let detailVC = DetailViewController()
+        self.navigationController?.pushViewController(detailVC, animated: true)
         let selectedRow = indexPath.row
-        if selectedRow  == indexPath.row{
-        vc.DetailLabel.text  = self.jsonRowsArray?[indexPath.row].description
-        vc.imageUrl =   self.jsonRowsArray?[indexPath.row].imageHref
+        if selectedRow  == indexPath.row {
+        detailVC.detailLabel.text  = self.jsonRowsArray?[indexPath.row].description
+        detailVC.imageUrl =   self.jsonRowsArray?[indexPath.row].imageHref
         }
-      
     }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    
         return UITableView.automaticDimension
-        
     }
-   
-    func presentNetowrkAlertWithTwoButton(withTitle title: String, message : String, actionHandler: ((UIAlertAction) -> Void)?) {
-        let alertController = UIAlertController(title: title, message:"", preferredStyle: .alert)
-        let CancelAction = UIAlertAction(title: Constants.AlertConstatnts.CANCEL_MSG, style: .cancel,handler: actionHandler)
-        let RetryAction = UIAlertAction(title: Constants.AlertConstatnts.RETRY_MSG, style: .default, handler: actionHandler)
-        alertController.addAction(CancelAction)
-        alertController.addAction(RetryAction)
-        alertController.preferredAction = RetryAction
+    func presentNetowrkAlertWithTwoButton(withTitle title: String, message: String, actionHandler: ((UIAlertAction) -> Void)?) {
+        let alertController = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: Constants.AlertConstatnts.CANCELMSG, style: .cancel, handler: actionHandler)
+        let retryAction = UIAlertAction(title: Constants.AlertConstatnts.RETRYMSG, style: .default, handler: actionHandler)
+        alertController.addAction(cancelAction)
+        alertController.addAction(retryAction)
+        alertController.preferredAction = retryAction
         self.present(alertController, animated: true, completion: nil)
     }
-       
-    
 }
 extension UIImageView {
-    func downloadImageFrom(link:String, contentMode: UIView.ContentMode) {
+    func downloadImageFrom(link: String, contentMode: UIView.ContentMode) {
         DispatchQueue.global().async { [weak self] in
-            URLSession.shared.dataTask( with: NSURL(string:link)! as URL, completionHandler: {
-                (data, response, error) -> Void in
+            URLSession.shared.dataTask( with: NSURL(string: link)! as URL, completionHandler: {(data, response, error) -> Void in
                 DispatchQueue.main.async {
-                    self?.image = UIImage(named: Constants.ImageConstatnts.Placeholder_ImageName)
+                    self?.image = UIImage(named: Constants.ImageConstatnts.PlaceholderImageName)
                     self?.contentMode =  contentMode
                     if let data = data {
                         self?.image = UIImage(data: data)
                     }
-                    if self?.image == nil{
-                        self?.image = UIImage(named: Constants.ImageConstatnts.Placeholder_ImageName)
+                    if self?.image == nil {
+                        self?.image = UIImage(named: Constants.ImageConstatnts.PlaceholderImageName)
                     }
                 }
             }).resume()
         }
-   
     }
 }
-extension UIView{
-    func activityStartAnimating(activityColor: UIColor, backgroundColor: UIColor,title: String,center: CGPoint) {
+extension UIView {
+    func activityStartAnimating(activityColor: UIColor, backgroundColor: UIColor, title: String, center: CGPoint) {
     let backgroundView = UIView()
     backgroundView.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
     backgroundView.backgroundColor = backgroundColor
@@ -87,21 +76,19 @@ extension UIView{
     activityIndicator.center = self.center
     activityIndicator.hidesWhenStopped = true
     activityIndicator.style = UIActivityIndicatorView.Style.large
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-        titleLabel.text = title
+    let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+    titleLabel.text = title
     titleLabel.textColor = UIColor.black
     activityIndicator.color = activityColor
     activityIndicator.startAnimating()
     self.isUserInteractionEnabled = false
-
     backgroundView.addSubview(activityIndicator)
     activityIndicator.addSubview(titleLabel)
-
     self.addSubview(backgroundView)
 }
 
 func activityStopAnimating() {
-    if let background = viewWithTag(475647){
+    if let background = viewWithTag(475647) {
         background.removeFromSuperview()
     }
     self.isUserInteractionEnabled = true

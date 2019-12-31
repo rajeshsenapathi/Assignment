@@ -5,16 +5,16 @@
 //  Copyright © 2019 Senapathi Rajesh. All rights reserved.
 //
 import Foundation
-struct Rows : Codable {
-	let title : String?
-	let description : String?
-	let imageHref : String?
+struct Rows: Codable {
+	let title: String?
+	let description: String?
+	let imageHref: String?
 
 	enum CodingKeys: String, CodingKey {
 
-		case title = "title"
-		case description = "description"
-		case imageHref = "imageHref"
+		case title
+		case description
+		case imageHref
 	}
 
 	init(from decoder: Decoder) throws {
@@ -22,7 +22,6 @@ struct Rows : Codable {
 		title = try values.decodeIfPresent(String.self, forKey: .title)
 		description = try values.decodeIfPresent(String.self, forKey: .description)
 		imageHref = try values.decodeIfPresent(String.self, forKey: .imageHref)
-        
 	}
 
 }

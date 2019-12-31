@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 struct Contact {
-    let title:String?
-    let description :String?
+    let title: String?
+    let description: String?
     let imageHref: String?
 }
