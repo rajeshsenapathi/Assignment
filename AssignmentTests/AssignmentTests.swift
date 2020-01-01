@@ -60,8 +60,7 @@ class Assignmenttests: XCTestCase {
                                           promise.fulfill()
                                       }
                        }, failure: { (data, response, error) in
-                        print(data!)
-                        print(response!)
+
                         XCTFail(error!.localizedDescription)
                        })
                         wait(for: [promise], timeout: 5.0)

@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    var imageView  = UIImageView()
+    var imageView  = ImageLoader()
     var imageUrl: String?
     var detailLabel: UILabel = {
         let label = UILabel()
@@ -25,23 +25,30 @@ class DetailViewController: UIViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "DetailViewController"
-        self.view.backgroundColor = .white
-         view?.addSubview(imageView)
-         self.view.addSubview(detailLabel)
-        let guide = view.safeAreaLayoutGuide
+       setupImageViewandLabel()
+    }
+
+func setupImageViewandLabel() {
+    self.title = "DetailViewController"
+    self.view.backgroundColor = .white
+     view?.addSubview(imageView)
+     self.view.addSubview(detailLabel)
+    let guide = view.safeAreaLayoutGuide
+    loadImageViewWithJsonImage()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 10).isActive = true
+    imageView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 10).isActive = true
+    imageView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -10).isActive = true
+    imageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+    imageView.contentMode = .scaleToFill
+    imageView.layer.cornerRadius = 5
+    imageView.layer.masksToBounds = true
+    detailLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive  = true
+    detailLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 10).isActive = true
+    detailLabel.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -10).isActive = true
+}
+    func loadImageViewWithJsonImage() {
         imageView.image = UIImage(named: Constants.ImageConstatnts.PlaceholderImageName)
-        imageView.downloadImageFrom(link: self.imageUrl ?? Constants.API.PLACEHOLDERURL, contentMode: .scaleToFill)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 10).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 10).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -10).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-        imageView.contentMode = .scaleToFill
-        imageView.layer.cornerRadius = 5
-        imageView.layer.masksToBounds = true
-        detailLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive  = true
-        detailLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 10).isActive = true
-        detailLabel.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -10).isActive = true
+        imageView.loadImageWithUrl(URL(string: imageUrl ?? Constants.API.PLACEHOLDERURL)!)
     }
 }

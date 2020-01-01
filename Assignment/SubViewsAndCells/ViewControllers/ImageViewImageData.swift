@@ -8,11 +8,11 @@
 
 import Foundation
 import UIKit
-let imageCache = NSCache<AnyObject, AnyObject>()
+
 class ImageLoader: UIImageView {
 
     var imageURL: URL?
-
+    var imageCache = NSCache<AnyObject, AnyObject>()
     let activityIndicator = UIActivityIndicatorView()
 
     func loadImageWithUrl(_ url: URL) {
@@ -30,16 +30,13 @@ class ImageLoader: UIImageView {
             activityIndicator.stopAnimating()
             return
         }
-        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+        URLSession.shared.dataTask(with: url, completionHandler: { (data, _, error) in
             if error != nil {
                 print(error as Any)
                 DispatchQueue.main.async(execute: {
                     self.activityIndicator.stopAnimating()
                 })
                 return
-            }
-            if let response = response {
-                print(response)
             }
             DispatchQueue.main.async(execute: {
                 if self.image == nil {
@@ -49,7 +46,7 @@ class ImageLoader: UIImageView {
                     if self.imageURL == url {
                         self.image = imageToCache
                     }
-                    imageCache.setObject(imageToCache, forKey: url as AnyObject)
+                    self.imageCache.setObject(imageToCache, forKey: url as AnyObject)
                 }
                 self.activityIndicator.stopAnimating()
             })

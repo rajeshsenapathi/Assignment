@@ -37,4 +37,3 @@ func makeAPICall(url: String, method: HttpMethod, success:@escaping ( Data?, HTT
                }.resume()
        }
 }
-
