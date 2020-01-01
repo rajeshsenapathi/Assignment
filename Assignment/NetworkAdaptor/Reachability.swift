@@ -30,7 +30,7 @@ class Reachability: NSObject {
         let ret = (isReachable && !needsConnection)
         // .ReachableViaWWAN
         let netInfo = CTTelephonyNetworkInfo()
-        if let cRAT = netInfo.currentRadioAccessTechnology  {
+        if let cRAT = netInfo.currentRadioAccessTechnology {
             switch cRAT {
             case CTRadioAccessTechnologyGPRS,
                  CTRadioAccessTechnologyEdge,

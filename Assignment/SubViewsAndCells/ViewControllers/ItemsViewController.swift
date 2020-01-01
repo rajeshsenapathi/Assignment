@@ -109,7 +109,7 @@ extension ItemsViewController: UITableViewDelegate, UITableViewDataSource {
         alertController.preferredAction = retryAction
         self.present(alertController, animated: true, completion: nil)
     }
-    func populateDataToCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell{
+    func populateDataToCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.SubViewCellConstants.CustomTableCellesuseIdentiFier, for: indexPath) as? CustomTableViewCell
         cell?.nameLabel.text =  self.jsonRowsArray?[indexPath.row].title
         cell?.profileImageView.loadImageWithUrl(URL(string: self.jsonRowsArray?[indexPath.row].imageHref ?? Constants.API.PLACEHOLDERURL)!)
