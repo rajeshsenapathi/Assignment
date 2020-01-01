@@ -16,7 +16,7 @@ struct  Constants {
         static let CustomTableCellesuseIdentiFier = "CustomTableViewCell"
     }
     struct ImageConstatnts {
-        static let PlaceholderImageName = "placeholder"
+        static let PlaceholderImageName = "placeholder.png"
     }
     struct AlertConstatnts {
         static let CANCELMSG = "Cancel"

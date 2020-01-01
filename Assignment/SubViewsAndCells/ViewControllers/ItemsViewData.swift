@@ -31,8 +31,7 @@ class ItemsViewData: NSObject {
             }
         },
             failure: { (data, response, error) in
-                     print(data!)
-                     print(response!)
+                   
                     print(error?.localizedDescription ?? Constants.Error.ERRORMSG)
         })
     }
