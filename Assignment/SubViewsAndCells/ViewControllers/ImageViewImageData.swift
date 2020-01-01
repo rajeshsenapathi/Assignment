@@ -33,22 +33,22 @@ class ImageLoader: UIImageView {
         URLSession.shared.dataTask(with: url, completionHandler: { (data, _, error) in
             if error != nil {
                 print(error as Any)
-                DispatchQueue.main.async(execute: {
-                    self.activityIndicator.stopAnimating()
+                DispatchQueue.main.async(execute: { [weak self] in
+                    self?.activityIndicator.stopAnimating()
                 })
                 return
             }
-            DispatchQueue.main.async(execute: {
-                if self.image == nil {
-                    self.image = UIImage(named: Constants.ImageConstatnts.PlaceholderImageName)
+            DispatchQueue.main.async(execute: { [weak self] in
+                if self?.image == nil {
+                    self?.image = UIImage(named: Constants.ImageConstatnts.PlaceholderImageName)
                 }
                 if let unwrappedData = data, let imageToCache = UIImage(data: unwrappedData) {
-                    if self.imageURL == url {
-                        self.image = imageToCache
+                    if self?.imageURL == url {
+                        self?.image = imageToCache
                     }
-                    self.imageCache.setObject(imageToCache, forKey: url as AnyObject)
+                    self?.imageCache.setObject(imageToCache, forKey: url as AnyObject)
                 }
-                self.activityIndicator.stopAnimating()
+                self?.activityIndicator.stopAnimating()
             })
         }).resume()
     }

@@ -20,9 +20,9 @@ class ItemsViewController: UIViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {
-        self.view?.activityStartAnimating(activityColor: UIColor.white, backgroundColor: UIColor.black.withAlphaComponent(0.5), title: Constants.AlertConstatnts.ActivityTitle,
-                                           center: self.view!.center )
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.activityStartAnimating(activityColor: UIColor.white, backgroundColor: UIColor.black.withAlphaComponent(0.5), title: Constants.AlertConstatnts.ActivityTitle,
+                                               center: (self?.view!.center)! )
               }
         loadTableView()
         if Reachability.isConnectedToNetwork() {
@@ -31,10 +31,10 @@ class ItemsViewController: UIViewController {
         } else {
             print(Constants.InternetConnectivity.NETWORKFailureMSG)
             self.presentNetowrkAlertWithTwoButton(withTitle: Constants.AlertConstatnts.TITLE, message: Constants.AlertConstatnts.TitleMsg) { (_) in
-                DispatchQueue.main.async {
-                    self.view.activityStopAnimating()
+                DispatchQueue.main.async { [weak self] in
+                    self?.view.activityStopAnimating()
+                    self?.refreshTabeleViewWithItems()
                 }
-                self.refreshTabeleViewWithItems()
             }
             return
         }
@@ -69,10 +69,10 @@ class ItemsViewController: UIViewController {
     func refreshTabeleViewWithItems() {
         itemsData.getItemsList { (rows, title) in
             self.jsonRowsArray = rows
-            DispatchQueue.main.async {
-                self.title = title
-                self.canadaTableView.reloadData()
-                self.view.activityStopAnimating()
+            DispatchQueue.main.async { [weak self] in
+                self?.title = title
+                self?.canadaTableView.reloadData()
+                self?.view.activityStopAnimating()
             }
            }
             }

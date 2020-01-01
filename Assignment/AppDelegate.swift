@@ -12,8 +12,9 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var navigationController: UINavigationController?
+    
    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.5580356717, green: 0.9118073583, blue: 0.8641058803, alpha: 1)
+    UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.6673806906, green: 0.8863012195, blue: 0.9289379716, alpha: 1)
     UINavigationBar.appearance().tintColor = UIColor.white
     UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.systemBlue]
 
@@ -25,8 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
+   
         return true
     }
+   
 
     // MARK: UISceneSession Lifecycle
 
