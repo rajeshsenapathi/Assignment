@@ -30,7 +30,7 @@ class ItemsViewController: UIViewController {
             self.refreshTabeleViewWithItems()
         } else {
             print(Constants.InternetConnectivity.NETWORKFailureMSG)
-            self.presentNetowrkAlertWithTwoButton(withTitle: Constants.AlertConstatnts.TITLE, message: Constants.AlertConstatnts.TitleMsg) { (uiAlertActionIn) in
+            self.presentNetowrkAlertWithTwoButton(withTitle: Constants.AlertConstatnts.TITLE, message: Constants.AlertConstatnts.TitleMsg) { (_) in
                 DispatchQueue.main.async {
                     self.view.activityStopAnimating()
                 }

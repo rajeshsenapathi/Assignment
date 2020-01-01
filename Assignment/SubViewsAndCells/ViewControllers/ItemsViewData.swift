@@ -15,7 +15,7 @@ class ItemsViewData: NSObject {
     return ItemsViewData()
 }
     func getItemsList(completionHandler: @escaping ItemsCompletionHandler) {
-        handler.makeAPICall(url: Constants.API.BASEURL, method: .GET, success: { (data, response, error) in
+        handler.makeAPICall(url: Constants.API.BASEURL, method: .GET, success: { (data, _, error) in
             guard let data = data else { return }
             let responseStrInISOLatin = String(data: data, encoding: String.Encoding.isoLatin1)
             guard let modifiedDataInUTF8Format = responseStrInISOLatin?.data(using: String.Encoding.utf8) else {
@@ -30,9 +30,8 @@ class ItemsViewData: NSObject {
                 print(error.localizedDescription)
             }
         },
-            failure: { (data, response, error) in
-                   
-                    print(error?.localizedDescription ?? Constants.Error.ERRORMSG)
+            failure: { (_, _, _) in
+                    print("error")
         })
     }
 }

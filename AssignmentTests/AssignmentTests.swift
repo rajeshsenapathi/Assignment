@@ -59,7 +59,7 @@ class Assignmenttests: XCTestCase {
                             }
                                           promise.fulfill()
                                       }
-                       }, failure: { (data, response, error) in
+                       }, failure: { (_, _, error) in
 
                         XCTFail(error!.localizedDescription)
                        })
